@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>논스톱하우스 세무 및 경영 전략 리포트</title>
+    <!-- Web Font & Icon Libraries -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ==========================================
+           [DESIGN TOKENS & VARIABLES]
+           Easily customizable brand colors and typography
+           ========================================== */
+        :root {
+            --bg-base: #0E0C09;           /* Warm Deep Dark */
+            --bg-surface: #1A1714;        /* Dark Warm Card */
+            --bg-surface-hover: #242018;
+            --primary: #D4A853;           /* Warm Gold */
+            --primary-rgb: 212, 168, 83;
+            --primary-light: rgba(212, 168, 83, 0.12);
+            --accent: #C4705A;            /* Warm Terracotta */
+            --accent-light: rgba(196, 112, 90, 0.12);
+            --success: #7DB87A;
+            --text-main: #F2EDE5;         /* Warm Cream White */
+            --text-muted: #9A8E82;        /* Warm Muted */
+            --text-light: #6B6057;
+            --border-color: rgba(242, 237, 229, 0.09);
+            --border-light: rgba(242, 237, 229, 0.04);
+            --shadow-sm: 0 1px 4px rgba(0,0,0,0.35);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.45);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.55);
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Urbanist', 'Noto Sans KR', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ==========================================
+           [LAYOUT STRUCTURE]
+           Sidebar + Main Content Area
+           ========================================== */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Left Navigation Sidebar */
+        .sidebar {
+            width: 300px;
+            background-color: var(--bg-surface);
+            border-right: 1px solid var(--border-color);
+            padding: 28px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            transition: var(--transition-smooth);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .brand-section {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 8px;
+        }
+
+        .brand-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo i {
+            color: var(--primary);
+        }
+
+        .brand-logo span {
+            color: var(--primary);
+        }
+
+        .brand-sub {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 5px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* Slide index links */
+        .slide-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .menu-item {
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13.5px;
+            color: var(--text-muted);
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid transparent;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+            border-color: rgba(79, 70, 229, 0.15);
+        }
+
+        .menu-item.active {
+            border-left: 3px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .menu-item span.index-num {
+            font-size: 11px;
+            background-color: var(--border-light);
+            color: var(--text-light);
+            padding: 2px 7px;
+            border-radius: 4px;
+            min-width: 26px;
+            text-align: center;
+        }
+
+        .menu-item.active span.index-num {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* View Control Toggles */
+        .view-controls {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toggle-btn {
+            background: var(--bg-base);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+            font-size: 13px;
+        }
+
+        .toggle-btn:hover {
+            background-color: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Main Content Panel */
+        .main-content {
+            margin-left: 300px;
+            flex-grow: 1;
+            padding: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-base);
+        }
+
+        /* ==========================================
+           [PRESENTATION / DOCUMENT WRAPPERS]
+           ========================================== */
+        /* Slide Deck Frame (16:9 Standard) */
+        .presentation-frame {
+            width: 100%;
+            max-width: 1120px;
+            aspect-ratio: 16/9;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Single Slide View Container */
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            padding: 50px 60px;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Slide Content Header */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 18px;
+            margin-bottom: 18px;
+        }
+
+        .slide-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slide-title i {
+            color: var(--primary);
+            font-size: 22px;
+        }
+
+        .slide-category {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .slide-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Slide Footer & Navigation controls inside frame */
+        .slide-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .slide-info-meta {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .slide-nav-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-arrow {
+            background: var(--bg-base);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-arrow:hover {
+            background-color: var(--primary);
+            color: #1A1714;
+            border-color: var(--primary);
+        }
+
+        /* Document Mode (Scrollable PDF-like list view) */
+        .document-view-container {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            flex-direction: column;
+            gap: 40px;
+            padding: 40px 0;
+        }
+
+        .doc-section {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ==========================================
+           [MODULE-SPECIFIC TYPOGRAPHY & COMPONENTS]
+           ========================================== */
+        /* Typography */
+        h3 { font-size: 20px; color: var(--text-main); margin-bottom: 12px; font-weight: 700; }
+        p { font-size: 14px; color: var(--text-muted); line-height: 1.75; }
+        strong { color: var(--text-main); }
+        code { background: var(--primary-light); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: 700; border: 1px solid rgba(212, 168, 83, 0.2); }
+
+        /* Grid Frameworks */
+        .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+        /* General Card Styles */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            transition: var(--transition-smooth);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(79, 70, 229, 0.25);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Accent-colored card variant */
+        .card-indigo {
+            background: var(--primary-light);
+            border-color: rgba(212, 168, 83, 0.25);
+        }
+
+        .card-coral {
+            background: var(--accent-light);
+            border-color: rgba(196, 112, 90, 0.2);
+        }
+
+        /* Custom Interactive Components */
+        .large-indicator-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, rgba(212, 168, 83, 0.12) 0%, transparent 70%);
+            border: 1.5px dashed rgba(212, 168, 83, 0.35);
+            border-radius: 16px;
+            padding: 36px;
+            text-align: center;
+        }
+
+        .indicator-number {
+            font-size: 88px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        /* Table Design */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13.5px;
+        }
+
+        th {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 14px 16px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(212, 168, 83, 0.15);
+        }
+
+        td {
+            padding: 13px 16px;
+            border-bottom: 1px solid var(--border-light);
+            color: var(--text-muted);
+        }
+
+        tr:hover td {
+            background: var(--bg-base);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Unordered Bullet Styling */
+        ul.bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        ul.bullet-list li {
+            position: relative;
+            padding-left: 26px;
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        ul.bullet-list li::before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--primary);
+            font-size: 14px;
+        }
+
+        /* Interactive Timeline Setup */
+        .timeline-container {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 24px;
+            padding: 16px 0;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 34px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+
+        .timeline-node {
+            position: relative;
+            z-index: 2;
+            background: var(--bg-surface);
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-node.passed, .timeline-node.active {
+            border-color: var(--primary);
+            background-color: var(--primary);
+            color: #1A1714;
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .timeline-item {
+            width: 22%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .timeline-content-card {
+            margin-top: 18px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px;
+            width: 100%;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-content-card h4 {
+            color: var(--primary);
+            font-size: 14px;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .timeline-content-card p {
+            font-size: 12px;
+        }
+
+        /* Custom Interactive Checklist Checkboxes */
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            user-select: none;
+            margin-bottom: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .check-item:hover {
+            background: var(--bg-base);
+            border-color: rgba(79, 70, 229, 0.25);
+        }
+
+        .check-item input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid var(--text-light);
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+            margin-top: 2px;
+            flex-shrink: 0;
+            background: var(--bg-surface);
+        }
+
+        .check-item input[type="checkbox"]:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .check-item input[type="checkbox"]:checked::before {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: #1A1714;
+            font-size: 10px;
+        }
+
+        .check-item.completed {
+            border-color: rgba(125, 184, 122, 0.25);
+            background: rgba(125, 184, 122, 0.06);
+        }
+
+        .check-item.completed .check-text {
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+
+        .check-text {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .check-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Diagnostic Quiz Container */
+        .quiz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* ==========================================
+           [ON-DEMAND SAVINGS CALCULATOR]
+           ========================================== */
+        .calc-wrapper {
+            background: var(--bg-base);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .slider-control {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .slider-control input[type="range"] {
+            flex-grow: 1;
+            height: 5px;
+            background: var(--border-color);
+            border-radius: 3px;
+            outline: none;
+            accent-color: var(--primary);
+        }
+
+        .slider-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 90px;
+            text-align: right;
+        }
+
+        .calc-results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+
+        .result-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .result-card.highlight {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .result-card h4 {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .result-card .price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .result-card.highlight .price {
+            color: var(--primary);
+        }
+
+        .savings-banner {
+            grid-column: span 2;
+            background: linear-gradient(90deg, rgba(212, 168, 83, 0.12), rgba(196, 112, 90, 0.12));
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--primary);
+            border: 1px solid rgba(212, 168, 83, 0.2);
+        }
+
+        /* Link styles */
+        .quick-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 1px solid rgba(212, 168, 83, 0.25);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .quick-link:hover {
+            background: var(--primary);
+            color: #1A1714;
+        }
+
+        .links-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        /* Step 2 teaser slide */
+        .step2-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .step2-card {
+            background: var(--bg-surface);
+            border: 1.5px dashed rgba(212, 168, 83, 0.18);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .step2-card:hover {
+            border-color: rgba(212, 168, 83, 0.4);
+            background: var(--bg-surface-hover);
+        }
+
+        .step2-card .lock-badge {
+            position: absolute;
+            top: -9px;
+            right: 12px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 9.5px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .step2-card i {
+            font-size: 24px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .step2-card h4 {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .step2-card p {
+            font-size: 11.5px;
+            color: var(--text-light);
+        }
+
+        /* Screen-size safety fallback */
+        @media (max-width: 1400px) {
+            .presentation-frame {
+                max-width: 960px;
+            }
+            .sidebar {
+                width: 260px;
+            }
+            .main-content {
+                margin-left: 260px;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px 10px;
+            }
+            .presentation-frame {
+                aspect-ratio: auto;
+                height: auto;
+            }
+            .slide {
+                padding: 26px 18px;
+            }
+            .cols-2, .cols-3 {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="brand-section">
+            <div class="brand-logo">
+                <i class="fa-solid fa-calculator"></i>
+                NONSTOP<span>HOUSE</span>
+            </div>
+            <div class="brand-sub">STRATEGIC WEALTH PLAN</div>
+        </div>
+
+        <ul class="slide-menu" id="sidebarMenu">
+        </ul>
+
+        <div class="view-controls">
+            <button class="toggle-btn" id="toggleViewBtn">
+                <i class="fa-solid fa-scroll"></i>
+                <span>문서 보기 모드로 전환</span>
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="presentation-frame" id="presentationFrame">
+
+            <!-- SLIDE 1: Title Screen -->
+            <section class="slide active" data-index="0" data-title="시작" data-category="Intro">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-compass"></i>
+                        논스톱하우스 세무 재설계
+                    </div>
+                    <span class="slide-category">Intro</span>
+                </div>
+                <div class="slide-body" style="justify-content: center; text-align: left;">
+                    <div style="display:inline-block; background:var(--primary-light); color:var(--primary); font-size:12px; font-weight:700; padding:5px 14px; border-radius:20px; letter-spacing:1px; margin-bottom:16px; text-transform:uppercase;">Step 1 — 세무 기초 설계</div>
+                    <h1 style="font-size: 44px; line-height: 1.15; margin-bottom: 14px; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px;">
+                        세무 관행을 깨는<br><span style="color: var(--primary);">영리한 창업 전략</span>
+                    </h1>
+                    <p style="font-size: 15px; max-width: 620px; margin-bottom: 22px; color: var(--text-muted);">
+                        2004년생 동대문 셀러를 위한 맞춤형 가이드.<br>
+                        5년 소득세 100% 면제 · 사입삼촌 증빙 · 홈택스 셋팅까지 한 번에.
+                    </p>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
+                        <span style="background:var(--bg-base); border: 1px solid var(--border-color); padding: 7px 14px; border-radius: 20px; font-size: 12.5px; color:var(--text-muted);">대표자: 이서연</span>
+                        <span style="background:var(--bg-base); border: 1px solid var(--border-color); padding: 7px 14px; border-radius: 20px; font-size: 12.5px; color:var(--text-muted);">간이과세자</span>
+                        <span style="background:var(--bg-base); border: 1px solid var(--border-color); padding: 7px 14px; border-radius: 20px; font-size: 12.5px; color:var(--text-muted);">인천 청라 (성장관리권역)</span>
+                    </div>
+                    <div class="links-row">
+                        <a href="https://www.hometax.go.kr" target="_blank" class="quick-link"><i class="fa-solid fa-arrow-up-right-from-square"></i>홈택스 바로가기</a>
+                        <a href="https://www.tossbank.com" target="_blank" class="quick-link"><i class="fa-solid fa-arrow-up-right-from-square"></i>토스뱅크 사업자</a>
+                        <a href="https://business.kakaobank.com" target="_blank" class="quick-link"><i class="fa-solid fa-arrow-up-right-from-square"></i>카카오뱅크 사업자</a>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 1/12</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 2: Executive Roadmap -->
+            <section class="slide" data-index="1" data-title="실행 로드맵" data-category="Overview">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-list-check"></i>
+                        초기 경영 핵심 요약
+                    </div>
+                    <span class="slide-category">Overview</span>
+                </div>
+                <div class="slide-body">
+                    <div class="cols-3" style="gap: 15px;">
+                        <div class="card">
+                            <i class="fa-solid fa-shield-halved" style="color: var(--primary); font-size: 28px; margin-bottom: 15px;"></i>
+                            <h4 style="color:var(--text-main); margin-bottom:8px;">소득세 100% 면제</h4>
+                            <p style="font-size:13px;">인천 청라(성장관리권역)의 지리적 이점과 청년 연령 요건을 결합해 세금 제로(0) 환경 세팅</p>
+                        </div>
+                        <div class="card">
+                            <i class="fa-solid fa-route" style="color: var(--primary); font-size: 28px; margin-bottom: 15px;"></i>
+                            <h4 style="color:var(--text-main); margin-bottom:8px;">업종코드 다각화</h4>
+                            <p style="font-size:13px;">스마트스토어 이외에 SNS 마켓, 구매대행 등 미래 확장 구조를 초기 단계에 정정 확보</p>
+                        </div>
+                        <div class="card">
+                            <i class="fa-solid fa-house-laptop" style="color: var(--primary); font-size: 28px; margin-bottom: 15px;"></i>
+                            <h4 style="color:var(--text-main); margin-bottom:8px;">집 주소 사업장</h4>
+                            <p style="font-size:13px;">불필요한 고정비를 완전 방지하고 부모님 명의 주택 시 사용대차계약서로 정당성 확보</p>
+                        </div>
+                        <div class="card">
+                            <i class="fa-solid fa-wallet" style="color: var(--primary); font-size: 28px; margin-bottom: 15px;"></i>
+                            <h4 style="color:var(--text-main); margin-bottom:8px;">자동 자금 흐름망</h4>
+                            <p style="font-size:13px;">홈택스 사업자통장과 신용카드를 완전 연동하여 매입 세액 공제 누수를 사전 원천 차단</p>
+                        </div>
+                        <div class="card">
+                            <i class="fa-solid fa-truck-moving" style="color: var(--primary); font-size: 28px; margin-bottom: 15px;"></i>
+                            <h4 style="color:var(--text-main); margin-bottom:8px;">사입삼촌 머니트레일</h4>
+                            <p style="font-size:13px;">계좌 송금 거래 고정 및 카카오톡 사입 내역, 엑셀 정산서를 엮어 비용 인정 데이터 전환</p>
+                        </div>
+                        <div class="card">
+                            <i class="fa-solid fa-handshake" style="color: var(--primary); font-size: 28px; margin-bottom: 15px;"></i>
+                            <h4 style="color:var(--text-main); margin-bottom:8px;">온디맨드 세무</h4>
+                            <p style="font-size:13px;">매월 나가는 정기 기장료 대신 주요 신고 시점에만 고용하여 고정비를 50% 절감</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 2/11</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 3: Youth Tax Reduction -->
+            <section class="slide" data-index="2" data-title="청년감면 조건" data-category="Tax Benefit">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-percent"></i>
+                        청년 창업 소득세 감면 전략
+                    </div>
+                    <span class="slide-category">Tax Benefit</span>
+                </div>
+                <div class="slide-body">
+                    <div class="cols-2">
+                        <div class="large-indicator-box">
+                            <div class="indicator-number">100%</div>
+                            <h4 style="color:var(--text-main); margin-bottom: 5px;">5년 간 종합소득세 감면</h4>
+                            <p style="font-size: 13px; color: var(--text-muted);">조세특례제한법 제6조에 따른 성장관리권역 100% 혜택</p>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 18px; margin-bottom: 10px;">자격 요건 적격성 자가진단</h3>
+                            <div class="quiz-container">
+                                <label class="check-item" data-rule="age">
+                                    <input type="checkbox" checked disabled>
+                                    <div>
+                                        <div class="check-text">연령 기준 통과 (만 34세 이하)</div>
+                                        <div class="check-desc">2004년생으로 신청일 기준 만 21세 (최적 요건 만족)</div>
+                                    </div>
+                                </label>
+                                <label class="check-item" data-rule="location">
+                                    <input type="checkbox" checked disabled>
+                                    <div>
+                                        <div class="check-text">지역 기준 통과 (성장관리권역)</div>
+                                        <div class="check-desc">인천광역시 서구 청라동은 100% 감면 대상 지역입니다.</div>
+                                    </div>
+                                </label>
+                                <label class="check-item" data-rule="first-time">
+                                    <input type="checkbox" id="chkFirstTime">
+                                    <div>
+                                        <div class="check-text">생애 최초 창업 여부 (확인 필요)</div>
+                                        <div class="check-desc">과거 통신판매업, 스마트스토어 등 사업자 이력이 완전히 전무한가요?</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 3/11</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 4: Business Category Optimization -->
+            <section class="slide" data-index="3" data-title="업종 정정" data-category="Structure">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-gears"></i>
+                        업태 및 업종(종목) 다각화 설계
+                    </div>
+                    <span class="slide-category">Structure</span>
+                </div>
+                <div class="slide-body">
+                    <p style="margin-bottom: 20px; font-size: 14px;">현재 사업자등록증상 등록된 <strong>소매업 - 전자상거래 소매업</strong>만으로는 향후 확장되는 플랫폼 마켓 대응 시 세금 소명 리스크가 발생합니다.</p>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>업태</th>
+                                    <th>종목 (세분화명)</th>
+                                    <th>국세청 업종코드</th>
+                                    <th>실무 적용 효과</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>소매업</td>
+                                    <td><strong>전자상거래 소매업</strong></td>
+                                    <td><code>525101</code></td>
+                                    <td>스마트스토어, 쿠팡, 자사몰 등 국내 몰 판매 기본 코드</td>
+                                </tr>
+                                <tr style="background: rgba(200, 255, 0, 0.02);">
+                                    <td>소매업</td>
+                                    <td><strong>해외직구 대행업 (필수정정)</strong></td>
+                                    <td><code>525105</code></td>
+                                    <td>향후 중국/유럽 사입 및 수입 구매대행 시 매출 산정 리스크 완전 방지</td>
+                                </tr>
+                                <tr>
+                                    <td>소매업</td>
+                                    <td><strong>SNS 마켓 (추천)</strong></td>
+                                    <td><code>525104</code></td>
+                                    <td>인스타그램 DM, 블로그 이웃 간 거래, 당근 공구 등 비플랫폼 소싱 정당화</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card card-indigo" style="margin-top: 14px; padding: 14px; display:flex; justify-content:space-between; align-items:center; gap:16px;">
+                        <div>
+                            <span style="color: var(--primary); font-weight: 700; font-size: 13px;">💡 지금 바로 할 수 있어요</span>
+                            <p style="font-size: 12.5px; margin-top:4px;">홈택스 로그인 → 사업자등록 정정 → 업종 추가. 창업 감면 자격은 그대로 유지됩니다.</p>
+                        </div>
+                        <a href="https://www.hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index_pp.xml&menuCd=PPT02010000" target="_blank" class="quick-link" style="white-space:nowrap; flex-shrink:0;">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>사업자 정정 신청
+                        </a>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 4/11</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: Home-Office Strategy -->
+            <section class="slide" data-index="4" data-title="사업장 주소지" data-category="Operations">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-home"></i>
+                        집(거주지) 사업장 등록 실무 가이드
+                    </div>
+                    <span class="slide-category">Operations</span>
+                </div>
+                <div class="slide-body">
+                    <div class="cols-2">
+                        <div>
+                            <h3>의류 셀러 80%의 출발지</h3>
+                            <p style="margin-bottom: 15px;">소규모 창업 시 월 10~15만원의 비상주 사무실/공유오피스 월세는 현금흐름 낭비입니다. 집 주소 등록은 완전히 합법적이며 실무에서 널리 활용됩니다.</p>
+
+                            <h4 style="color: var(--primary); font-size: 14px; margin-bottom: 5px;">⚠️ 부모님 명의 주택일 때</h4>
+                            <p style="font-size: 13px; margin-bottom: 15px;">세무서 소명 시 형식상의 하자를 메우기 위해 <strong>사용대차계약서(무상임대차계약서)</strong>를 미리 출력해 부모님 직인을 찍어 보관해야 합니다.</p>
+                        </div>
+                        <div class="card" style="display: flex; flex-direction: column; justify-content: center; gap: 12px;">
+                            <h4 style="color:var(--text-main);"><i class="fa-solid fa-triangle-exclamation" style="color: var(--primary); margin-right: 8px;"></i> 주의 및 대응 전술</h4>
+                            <ul class="bullet-list">
+                                <li><strong>아파트 택배 및 민원:</strong> 부자재나 초기 사입 물량 박스가 복도를 막아 민원이 생기면 3PL(삼자물류) 위탁을 적극 권장합니다.</li>
+                                <li><strong>감면 지위 연계:</strong> 현재 주택지(청라)가 감면 100% 지역이므로 소호 사무실 이전 시 주소지 감면 혜택 변경 여부를 미리 검토해야 합니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 5/11</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: Financial Setup -->
+            <section class="slide" data-index="5" data-title="금융 인프라" data-category="Infrastructure">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-money-check-dollar"></i>
+                        자금 통제 및 증빙 자동화 셋팅
+                    </div>
+                    <span class="slide-category">Infrastructure</span>
+                </div>
+                <div class="slide-body">
+                    <div class="cols-2">
+                        <div>
+                            <h3 style="font-size:18px;">가장 먼저 해야 할 카드·통장 정리</h3>
+                            <p style="margin-bottom: 15px; font-size: 13px;">경영 실무 미숙으로 발생하는 세무 손실의 90%는 '사적인 용도의 통장과 사업 자금의 혼용'에서 시작됩니다.</p>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div class="card card-indigo" style="padding: 12px 18px;">
+                                    <strong style="color: var(--primary); font-size: 13px;">1. 계좌의 물리적 격리</strong>
+                                    <p style="font-size:12px; margin-top:4px;">토스뱅크/카카오뱅크에서 '사업자 통장'을 따로 하나만 만들고, 오직 매출 정산과 사업 지출용으로만 씁니다.</p>
+                                    <div class="links-row" style="margin-top:8px;">
+                                        <a href="https://www.tossbank.com" target="_blank" class="quick-link"><i class="fa-solid fa-arrow-up-right-from-square"></i>토스뱅크</a>
+                                        <a href="https://business.kakaobank.com" target="_blank" class="quick-link"><i class="fa-solid fa-arrow-up-right-from-square"></i>카카오뱅크</a>
+                                    </div>
+                                </div>
+                                <div class="card" style="padding: 12px 18px;">
+                                    <strong style="color: var(--text-main); font-size: 13px;">2. 홈택스 사업용 카드 등록</strong>
+                                    <p style="font-size:12px; margin-top:4px;">대표자 명의 카드를 홈택스에 등록하면 소득세 신고 시 영수증 보관 의무가 면제됩니다.</p>
+                                    <div class="links-row" style="margin-top:8px;">
+                                        <a href="https://www.hometax.go.kr" target="_blank" class="quick-link"><i class="fa-solid fa-arrow-up-right-from-square"></i>홈택스 카드 등록</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h4 style="color:var(--text-main); margin-bottom: 15px;"><i class="fa-solid fa-receipt" style="color:var(--primary); margin-right: 8px;"></i> 기타 핵심 기초 설정</h4>
+                            <ul class="bullet-list" style="gap: 15px;">
+                                <li><strong>지출증빙 등록:</strong> 홈택스에 사업용 휴대폰 번호를 가맹점 지출증빙용 번호로 연동하십시오. 도매 매장 퀵비나 밥값 지출 시 소명 자료가 자동 구축됩니다.</li>
+                                <li><strong>세금계산서 메일 등록:</strong> 세금계산서 누락 방지를 위해 사용도가 높은 도메인 메일을 세금계산서 전용 수신 주소로 기입해 둡니다.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 6/11</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: Saeip-Samchon Solution -->
+            <section class="slide" data-index="6" data-title="사입삼촌 비용" data-category="Saeip-Samchon">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-person-military-to-person"></i>
+                        사입삼촌 정산 비용 처리 구축
+                    </div>
+                    <span class="slide-category">Saeip-Samchon</span>
+                </div>
+                <div class="slide-body">
+                    <div class="cols-2">
+                        <div>
+                            <h3>도매 관행과 국세청 전산의 타협점</h3>
+                            <p style="margin-bottom: 15px; font-size: 14px;">동대문 도매 특성 상 사입삼촌들은 3.3% 프리랜서 인적 원천징수나 계산서 발행을 매우 꺼립니다. 이럴 때는 <strong>"실제 비용 사용 이력(Money Trail)"</strong>을 직접 증명하는 전술을 취해야 합니다.</p>
+
+                            <div class="card" style="border-left: 4px solid var(--primary); background: rgba(200, 255, 0, 0.02); padding: 15px;">
+                                <strong style="color:var(--text-main); font-size:14px;"><i class="fa-solid fa-ban" style="color:#E87A6A; margin-right: 8px;"></i> 절대 금지 행동:</strong>
+                                <p style="font-size:12px; margin-top:5px;">현금 전달, 계좌번호를 수시로 바꾸어 입금하는 형태. 소명 시 비용 인정을 받을 가능성이 제로가 됩니다.</p>
+                            </div>
+                        </div>
+                        <div class="card" style="padding: 20px;">
+                            <h4 style="color:var(--text-main); margin-bottom: 12px;">현실적인 합법적 증빙 3원칙</h4>
+                            <ul class="bullet-list" style="gap:15px;">
+                                <li><strong>경로 고정:</strong> 반드시 홈택스 등록 '사업용 통장' → '삼촌 명의 본인 계좌'로 이체하고 적요란에 [사입배송료] 표기</li>
+                                <li><strong>채팅 백업:</strong> 사입 내역, 운송 대기, 입고 확정 카카오톡 내용이나 도매 플랫폼(셀업 등) 장부 자료 매월 다운로드</li>
+                                <li><strong>실무 간이 대장:</strong> 세무 소명용 엑셀 장부를 매월 1회 업데이트 보관</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 7/11</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: On-Demand Pricing Benefits -->
+            <section class="slide" data-index="7" data-title="세무비용 설계" data-category="Accounting Mode">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                        세무대리 비용 최적화 (On-Demand VS 기장)
+                    </div>
+                    <span class="slide-category">Accounting Mode</span>
+                </div>
+                <div class="slide-body">
+                    <div class="cols-2">
+                        <div>
+                            <h3>월 기장료는 사치입니다</h3>
+                            <p style="font-size: 13px; margin-bottom: 15px;">초기 1인 마켓이 매달 10만원 이상의 고정 기장료를 내는 것은 매우 불합리합니다. 사업 초기에는 <strong>On-Demand(신고 대리) 방식</strong>이 훨씬 우월합니다.</p>
+
+                            <div class="calc-wrapper">
+                                <div class="input-group">
+                                    <label for="monthlySales">예상 연간 매출 규모</label>
+                                    <div class="slider-control">
+                                        <input type="range" id="monthlySales" min="1000" max="15000" step="500" value="4000">
+                                        <span class="slider-value" id="salesVal">4,000만 원</span>
+                                    </div>
+                                </div>
+                                <div class="calc-results">
+                                    <div class="result-card">
+                                        <h4>월별 고정 기장 방식</h4>
+                                        <div class="price" id="costMonthly">132만원 / 년</div>
+                                    </div>
+                                    <div class="result-card highlight">
+                                        <h4>시즌별 온디맨드 신고</h4>
+                                        <div class="price" id="costOnDemand">40만원 / 년</div>
+                                    </div>
+                                    <div class="savings-banner" id="savingsText">
+                                        연간 약 920,000원의 고정비 절감 효과!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:15px;">
+                            <div class="card" style="padding:15px;">
+                                <strong style="color:var(--primary); font-size:14px;">On-Demand가 유용한 단계:</strong>
+                                <p style="font-size:12px; margin-top:5px;">연 매출 1.5억 미만, 고용 직원 없음(4대보험 단순), 간이과세자 시점</p>
+                            </div>
+                            <div class="card" style="padding:15px;">
+                                <strong style="color:var(--text-main); font-size:14px;">기장 계약으로 전환해야 할 타이밍:</strong>
+                                <p style="font-size:12px; margin-top:5px;">직원 정식 채용(원천세 매달 관리 필요), 복식부기 의무자 요건(도소매 연 3억 이상)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 8/11</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: Tax Compliance Calendar -->
+            <section class="slide" data-index="8" data-title="세무 캘린더" data-category="Compliance">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        논스톱하우스 세무 일정 관리
+                    </div>
+                    <span class="slide-category">Compliance</span>
+                </div>
+                <div class="slide-body">
+                    <div class="timeline-container">
+                        <div class="timeline-item">
+                            <div class="timeline-node active">1</div>
+                            <div class="timeline-content-card">
+                                <h4>매년 1월</h4>
+                                <p><strong>부가가치세 신고</strong></p>
+                                <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">간이과세자 1년 통합 매출액/매입 실적 신고 기간</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">2</div>
+                            <div class="timeline-content-card">
+                                <h4>매년 5월</h4>
+                                <p><strong>종합소득세 신고</strong></p>
+                                <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">청년 창업 세액감면(100%)을 정식 신청하는 핵심 달</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">3</div>
+                            <div class="timeline-content-card">
+                                <h4>매년 7월</h4>
+                                <p><strong>부가세 예정부과</strong></p>
+                                <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">세무서의 고지 금액 납부 또는 매출 실적 신고 선택</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-node">4</div>
+                            <div class="timeline-content-card">
+                                <h4>매월 말</h4>
+                                <p><strong>증빙 마감 백업</strong></p>
+                                <p style="font-size:11px; color:var(--text-muted); margin-top:4px;">네이버/쿠팡 등 각 플랫폼 정산액 및 사입삼촌 엑셀 정리</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 9/11</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: Growth Monitoring -->
+            <section class="slide" data-index="9" data-title="일반과세 전환 대비" data-category="Growth Risk">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-chart-line"></i>
+                        간이과세 기준선 모니터링 및 리스크
+                    </div>
+                    <span class="slide-category">Growth Risk</span>
+                </div>
+                <div class="slide-body">
+                    <div class="cols-2">
+                        <div>
+                            <h3>동대문 특유의 폭발적 성장과 함정</h3>
+                            <p style="margin-bottom:12px; font-size:13px;">의류 쇼핑몰은 아이템 하나가 알고리즘을 타면 매출액이 순간적으로 뛰어올라 <strong>연매출 8,000만원(일반과세 전환 기준)</strong>을 즉시 돌파하게 됩니다.</p>
+                            <div class="card" style="padding:15px; margin-bottom:10px;">
+                                <strong style="color:var(--primary); font-size:13px;">일반과세자로 강제 전환 시 일어나는 변화:</strong>
+                                <ul style="margin-top:5px; font-size:12px; padding-left:15px; color:var(--text-muted);">
+                                    <li>부가가치세 실질 세율 급격 인상 (납부 의무 발생)</li>
+                                    <li>거래 도매처로부터 세금계산서 정식 수취 강제화</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card" style="display:flex; flex-direction:column; justify-content:center;">
+                            <h4 style="color:var(--text-main); margin-bottom:10px;"><i class="fa-solid fa-shield" style="color:var(--primary); margin-right:8px;"></i> 성장 연착륙 프로토콜</h4>
+                            <ul class="bullet-list">
+                                <li>매달 매출/매입 장부를 들여다보고 매출액 한도가 8,000만원에 근접하는지 파악할 것</li>
+                                <li>매출이 돌파하는 시점에 세무사 상담을 잡아 기장 모드로 안전하게 피봇팅</li>
+                                <li>세금계산서 매입 비율을 강제적으로 50% 이상으로 확보해둘 것</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 10/11</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: Master Action Checklist -->
+            <section class="slide" data-index="10" data-title="실행 과제" data-category="Action Items">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-square-check"></i>
+                        이번 달 미션 핵심 체크리스트
+                    </div>
+                    <span class="slide-category">Action Items</span>
+                </div>
+                <div class="slide-body">
+                    <div class="cols-2">
+                        <div>
+                            <h3 style="font-size:16px; margin-bottom:10px;">즉시 실행 (이번 주 내)</h3>
+                            <div class="interactive-todo">
+                                <label class="check-item" data-todo-id="1">
+                                    <input type="checkbox" class="todo-chk">
+                                    <div>
+                                        <div class="check-text">사업자 전용 통장 개설</div>
+                                        <div class="check-desc">타 통장과 격리된 카카오뱅크/토스 기업용 통장 연동</div>
+                                    </div>
+                                </label>
+                                <label class="check-item" data-todo-id="2">
+                                    <input type="checkbox" class="todo-chk">
+                                    <div>
+                                        <div class="check-text">홈택스 카드 및 지출증빙 번호 등록</div>
+                                        <div class="check-desc">주로 사용할 신용/체크카드 홈택스 세금 관리용에 등록</div>
+                                    </div>
+                                </label>
+                                <label class="check-item" data-todo-id="3">
+                                    <input type="checkbox" class="todo-chk">
+                                    <div>
+                                        <div class="check-text">사용대차계약서 구비</div>
+                                        <div class="check-desc">부모님 자가 주거지 증빙용 무상 계약서 보관</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 style="font-size:16px; margin-bottom:10px;">월별·신고 시점 과제</h3>
+                            <div class="interactive-todo">
+                                <label class="check-item" data-todo-id="4">
+                                    <input type="checkbox" class="todo-chk">
+                                    <div>
+                                        <div class="check-text">업종 추가 정정 진행</div>
+                                        <div class="check-desc">SNS 마켓, 구매대행 종목 홈택스 정정 신청하기</div>
+                                    </div>
+                                </label>
+                                <label class="check-item" data-todo-id="5">
+                                    <input type="checkbox" class="todo-chk">
+                                    <div>
+                                        <div class="check-text">사입삼촌 정산 내역서 구축</div>
+                                        <div class="check-desc">매월 이체 영수증과 채팅 대화 캡처 장부 대장에 기록하기</div>
+                                    </div>
+                                </label>
+                                <label class="check-item" data-todo-id="6">
+                                    <input type="checkbox" class="todo-chk">
+                                    <div>
+                                        <div class="check-text">청년창업 감면 업종코드 크로스체크</div>
+                                        <div class="check-desc">세무사에게 감면 완벽 적용 가능 여부 카톡 한 줄 검증 의뢰</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 11/11</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 12: Step 2 Coming Soon -->
+            <section class="slide" data-index="11" data-title="다음 단계 예고" data-category="Step 2">
+                <div class="slide-header">
+                    <div class="slide-title">
+                        <i class="fa-solid fa-lock"></i>
+                        Step 2 — 다음에 배울 것들
+                    </div>
+                    <span class="slide-category">Step 2</span>
+                </div>
+                <div class="slide-body">
+                    <div style="text-align:center; margin-bottom: 20px;">
+                        <div style="display:inline-flex; align-items:center; gap:8px; background: linear-gradient(90deg, rgba(212,168,83,0.12), rgba(196,112,90,0.1)); border:1px solid rgba(212,168,83,0.25); padding:10px 22px; border-radius:30px;">
+                            <i class="fa-solid fa-circle-check" style="color:var(--success); font-size:16px;"></i>
+                            <span style="font-size:14px; font-weight:700; color:var(--text-main);">Step 1 체크리스트를 모두 완료하면 Step 2를 시작할 수 있어요!</span>
+                        </div>
+                        <p style="margin-top: 10px; font-size:13px;">사업자 통장 · 홈택스 카드 등록 · 업종 정정 · 사용대차계약서가 완료된 후 다음 단계로 넘어가세요.</p>
+                    </div>
+
+                    <div class="step2-grid">
+                        <div class="step2-card">
+                            <span class="lock-badge">STEP 2</span>
+                            <i class="fa-solid fa-hospital-user"></i>
+                            <h4>4대보험 완전 이해</h4>
+                            <p>매출이 늘수록 갑자기 커지는 지역가입자 건강보험료. 미리 알고 대비하는 법</p>
+                        </div>
+                        <div class="step2-card">
+                            <span class="lock-badge">STEP 2</span>
+                            <i class="fa-solid fa-receipt"></i>
+                            <h4>현금영수증 의무 발행</h4>
+                            <p>건당 10만원 이상 현금 거래 시 의무 발행. 안 하면 가산세 20% 즉시 적용</p>
+                        </div>
+                        <div class="step2-card">
+                            <span class="lock-badge">STEP 2</span>
+                            <i class="fa-solid fa-file-invoice"></i>
+                            <h4>전자세금계산서 발행</h4>
+                            <p>일반과세 전환 후 B2B 거래에서 필수. 발행 방법과 누락 방지 루틴</p>
+                        </div>
+                        <div class="step2-card">
+                            <span class="lock-badge">STEP 2</span>
+                            <i class="fa-solid fa-building"></i>
+                            <h4>법인 전환 판단 기준</h4>
+                            <p>순이익 1억 이상부터 법인이 유리해지는 이유와 전환 타이밍</p>
+                        </div>
+                        <div class="step2-card">
+                            <span class="lock-badge">STEP 2</span>
+                            <i class="fa-solid fa-shop"></i>
+                            <h4>플랫폼 vs 자사몰 전략</h4>
+                            <p>수수료·세무처리·현금흐름 차이. 어떤 시점에 자사몰을 열어야 할까?</p>
+                        </div>
+                        <div class="step2-card">
+                            <span class="lock-badge">STEP 2</span>
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <h4>간이→일반과세 전환 플랜</h4>
+                            <p>매출 8천만원 돌파 시 세금 구조가 완전히 바뀌는 것을 미리 준비</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-footer">
+                    <span class="slide-info-meta">Nonstop House Strategic Roadmap — Slide 12/12</span>
+                    <div class="slide-nav-controls">
+                        <button class="nav-arrow prev-slide"><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="nav-arrow next-slide"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="document-view-container" id="documentViewContainer">
+        </div>
+    </main>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const slides = document.querySelectorAll(".slide");
+        const sidebarMenu = document.getElementById("sidebarMenu");
+        const toggleViewBtn = document.getElementById("toggleViewBtn");
+        const presentationFrame = document.getElementById("presentationFrame");
+        const documentViewContainer = document.getElementById("documentViewContainer");
+
+        let currentSlideIndex = 0;
+        let isPresentationMode = true;
+
+        // 1. Generate Sidebar Menu Items Dynamically
+        slides.forEach((slide, idx) => {
+            const indexStr = String(idx + 1).padStart(2, '0');
+            const title = slide.getAttribute("data-title") || `슬라이드 ${indexStr}`;
+            const li = document.createElement("li");
+            li.className = `menu-item ${idx === 0 ? 'active' : ''}`;
+            li.setAttribute("data-target", idx);
+            li.innerHTML = `<span class="index-num">${indexStr}</span><span>${title}</span>`;
+            sidebarMenu.appendChild(li);
+
+            li.addEventListener("click", () => {
+                if (!isPresentationMode) {
+                    toggleViewMode();
+                }
+                goToSlide(idx);
+            });
+        });
+
+        const menuItems = document.querySelectorAll(".menu-item");
+
+        // 2. Navigation Logic
+        function goToSlide(index) {
+            if (index < 0 || index >= slides.length) return;
+
+            slides[currentSlideIndex].classList.remove("active");
+            menuItems[currentSlideIndex].classList.remove("active");
+
+            currentSlideIndex = index;
+
+            slides[currentSlideIndex].classList.add("active");
+            menuItems[currentSlideIndex].classList.add("active");
+
+            menuItems[currentSlideIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        document.addEventListener("keydown", function (e) {
+            if (!isPresentationMode) return;
+            if (e.key === "ArrowRight" || e.key === "Space") {
+                goToSlide(currentSlideIndex + 1);
+            } else if (e.key === "ArrowLeft") {
+                goToSlide(currentSlideIndex - 1);
+            }
+        });
+
+        document.querySelectorAll(".next-slide").forEach(btn => {
+            btn.addEventListener("click", () => goToSlide(currentSlideIndex + 1));
+        });
+
+        document.querySelectorAll(".prev-slide").forEach(btn => {
+            btn.addEventListener("click", () => goToSlide(currentSlideIndex - 1));
+        });
+
+        // Swipe Gestures for Mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        presentationFrame.addEventListener("touchstart", e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        presentationFrame.addEventListener("touchend", e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            if (!isPresentationMode) return;
+            if (touchEndX < touchStartX - 50) goToSlide(currentSlideIndex + 1);
+            if (touchEndX > touchStartX + 50) goToSlide(currentSlideIndex - 1);
+        }
+
+        // 3. View Mode Toggle
+        toggleViewBtn.addEventListener("click", toggleViewMode);
+
+        function toggleViewMode() {
+            isPresentationMode = !isPresentationMode;
+            if (isPresentationMode) {
+                documentViewContainer.style.display = "none";
+                presentationFrame.style.display = "flex";
+                toggleViewBtn.innerHTML = `<i class="fa-solid fa-scroll"></i><span>문서 보기 모드로 전환</span>`;
+                goToSlide(currentSlideIndex);
+            } else {
+                buildDocumentView();
+                presentationFrame.style.display = "none";
+                documentViewContainer.style.display = "flex";
+                toggleViewBtn.innerHTML = `<i class="fa-solid fa-display"></i><span>프레젠테이션 전환</span>`;
+            }
+        }
+
+        function buildDocumentView() {
+            documentViewContainer.innerHTML = "";
+            slides.forEach((slide) => {
+                const docSection = document.createElement("div");
+                docSection.className = "doc-section";
+
+                const clone = slide.cloneNode(true);
+                clone.style.display = "flex";
+                clone.style.height = "auto";
+                clone.style.padding = "0";
+
+                const footer = clone.querySelector(".slide-footer");
+                if (footer) footer.remove();
+
+                docSection.appendChild(clone);
+                documentViewContainer.appendChild(docSection);
+            });
+
+            bindCalculatorEvents();
+            bindChecklistEvents();
+        }
+
+        // 4. Calculator Logic
+        function updateCalculator() {
+            const rangeInput = document.getElementById("monthlySales");
+            if (!rangeInput) return;
+            const salesVal = parseInt(rangeInput.value);
+
+            document.getElementById("salesVal").textContent = `${salesVal.toLocaleString()}만 원`;
+
+            // On-demand: VAT report 15만 + income tax 25만 = 40만/year (fixed)
+            // Monthly bookkeeping: scales slightly with revenue
+            const costOnDemandYear = 40;
+            const costMonthlyYear = salesVal < 5000 ? 132 : salesVal < 10000 ? 150 : 180;
+            const savings = costMonthlyYear - costOnDemandYear;
+
+            document.getElementById("costMonthly").textContent = `₩ ${(costMonthlyYear * 10000).toLocaleString()}`;
+            document.getElementById("costOnDemand").textContent = `₩ ${(costOnDemandYear * 10000).toLocaleString()}`;
+            document.getElementById("savingsText").textContent = `연간 약 ${(savings * 10000).toLocaleString()}원의 불필요한 세무 고정비 절감!`;
+        }
+
+        function bindCalculatorEvents() {
+            const rangeInput = document.getElementById("monthlySales");
+            if (rangeInput) {
+                rangeInput.addEventListener("input", updateCalculator);
+                updateCalculator();
+            }
+        }
+
+        // 5. Checklist Event Bindings
+        function bindChecklistEvents() {
+            const todoLabels = document.querySelectorAll(".interactive-todo .check-item");
+            todoLabels.forEach(label => {
+                const chk = label.querySelector("input[type='checkbox']");
+
+                if (chk && chk.checked) {
+                    label.classList.add("completed");
+                }
+
+                label.addEventListener("click", function(e) {
+                    if (e.target !== chk) {
+                        chk.checked = !chk.checked;
+                    }
+                    label.classList.toggle("completed", chk.checked);
+                });
+            });
+        }
+
+        // Initialize
+        bindCalculatorEvents();
+        bindChecklistEvents();
+    });
+</script>
+
+</body>
+</html>
