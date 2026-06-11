@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code 완전 정복 코스</title>
+  <style>
+    :root {
+      --primary: #D97706;
+      --primary-light: #FEF3C7;
+      --primary-dark: #92400E;
+      --bg: #FAFAF9;
+      --surface: #FFFFFF;
+      --border: #E7E5E4;
+      --text: #1C1917;
+      --text-muted: #78716C;
+      --code-bg: #1C1917;
+      --code-text: #E7E5E4;
+      --green: #059669;
+      --red: #DC2626;
+      --blue: #2563EB;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 15px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #1C1917 0%, #292524 60%, #3C1F00 100%);
+      color: #FFF;
+      padding: 72px 24px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(217,119,6,0.25) 0%, transparent 65%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(217,119,6,0.25);
+      border: 1px solid rgba(217,119,6,0.5);
+      color: #FCD34D;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .hero h1 {
+      font-size: clamp(28px, 6vw, 52px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { color: #FCD34D; }
+    .hero p {
+      font-size: 16px;
+      color: #A8A29E;
+      max-width: 480px;
+      margin: 0 auto 32px;
+      position: relative;
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      position: relative;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 28px; font-weight: 800; color: #FCD34D; display: block; }
+    .stat-label { font-size: 12px; color: #A8A29E; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin: 40px 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .toc h2 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .toc ol {
+      padding-left: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 24px;
+    }
+    .toc a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .toc a:hover { color: var(--primary); }
+
+    /* ── SECTIONS ── */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 40px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-num {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      color: #FFF;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .section h2 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 28px 0 10px;
+      color: var(--text);
+    }
+    h3::before {
+      content: '▸ ';
+      color: var(--primary);
+    }
+
+    p { margin-bottom: 14px; }
+
+    /* ── CODE ── */
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      border-radius: 8px;
+      padding: 18px 20px;
+      font-size: 13px;
+      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+      line-height: 1.6;
+      overflow-x: auto;
+      margin: 12px 0 20px;
+    }
+    code {
+      background: #F5F4F2;
+      color: #B45309;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 13px;
+      font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
+    }
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+    .comment { color: #6B7280; }
+    .string  { color: #86EFAC; }
+    .keyword { color: #FCD34D; }
+
+    /* ── TABLES ── */
+    .table-wrap { overflow-x: auto; margin: 16px 0 24px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th {
+      background: #F5F4F2;
+      font-weight: 700;
+      text-align: left;
+      padding: 10px 16px;
+      border-bottom: 2px solid var(--border);
+      color: var(--text);
+    }
+    td {
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #FAFAF9; }
+
+    /* ── CALLOUTS ── */
+    .callout {
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .callout.tip   { background: #F0FDF4; border-left: 3px solid var(--green); }
+    .callout.warn  { background: #FFF7ED; border-left: 3px solid var(--primary); }
+    .callout.info  { background: #EFF6FF; border-left: 3px solid var(--blue); }
+    .callout.error { background: #FEF2F2; border-left: 3px solid var(--red); }
+
+    /* ── BADGE ── */
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-green  { background: #D1FAE5; color: #065F46; }
+    .badge-yellow { background: #FEF3C7; color: #92400E; }
+    .badge-red    { background: #FEE2E2; color: #991B1B; }
+
+    /* ── PATTERN GRID ── */
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .pattern-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .pattern-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--primary-dark);
+    }
+    .pattern-card pre {
+      margin: 0;
+      font-size: 12px;
+      padding: 12px;
+    }
+
+    /* ── CHECKLIST ── */
+    .checklist {
+      list-style: none;
+      padding: 0;
+    }
+    .checklist li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+
+    /* ── MISTAKE CARD ── */
+    .mistake-card {
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+    }
+    .mistake-bad  { background: #FEF2F2; padding: 12px 16px; border-bottom: 1px solid #FECACA; }
+    .mistake-good { background: #F0FDF4; padding: 12px 16px; }
+    .mistake-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .mistake-bad  .mistake-label { color: var(--red); }
+    .mistake-good .mistake-label { color: var(--green); }
+    .mistake-card pre {
+      margin: 0;
+      background: transparent;
+      color: var(--text);
+      padding: 4px 0;
+      font-size: 13px;
+    }
+
+    /* ── COST TABLE ── */
+    .cost-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cost-bar-fill {
+      height: 6px;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--text-muted);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--primary); text-decoration: none; }
+
+    /* ── PRINT ── */
+    @media print {
+      body { background: #FFF; }
+      .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .section { break-inside: avoid; box-shadow: none; border: 1px solid #DDD; }
+      pre { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    @media (max-width: 600px) {
+      .section { padding: 24px 20px; }
+      .toc ol { grid-template-columns: 1fr; }
+      .pattern-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ HERO -->
+<div class="hero">
+  <div class="hero-badge">Complete Beginner Course</div>
+  <h1>Claude Code<br><span>완전 정복 코스</span></h1>
+  <p>설치부터 실전까지 — AI 페어 프로그래밍을 마스터하는 가장 빠른 길</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">10</span><span class="stat-label">챕터</span></div>
+    <div class="stat"><span class="stat-num">10</span><span class="stat-label">실전 패턴</span></div>
+    <div class="stat"><span class="stat-num">1M</span><span class="stat-label">토큰 컨텍스트</span></div>
+    <div class="stat"><span class="stat-num">∞</span><span class="stat-label">가능성</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h2>목차</h2>
+    <ol>
+      <li><a href="#s1">Claude Code란?</a></li>
+      <li><a href="#s2">설치 & 첫 실행</a></li>
+      <li><a href="#s3">대화하듯 코딩하기</a></li>
+      <li><a href="#s4">파일 읽기 · 쓰기 · 수정</a></li>
+      <li><a href="#s5">슬래시 명령어 치트시트</a></li>
+      <li><a href="#s6">Git 워크플로우 자동화</a></li>
+      <li><a href="#s7">실전 패턴 10가지</a></li>
+      <li><a href="#s8">권한 & 보안 설정</a></li>
+      <li><a href="#s9">고급 기능</a></li>
+      <li><a href="#s10">자주 하는 실수 & 해결법</a></li>
+    </ol>
+  </div>
+
+  <!-- ═══ 1 ═══ -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>Claude Code란?</h2>
+    </div>
+
+    <p>Claude Code는 <strong>터미널 안에서 동작하는 AI 코딩 어시스턴트</strong>입니다. 단순한 코드 자동완성이 아니라, 프로젝트 전체를 이해하고 파일을 직접 읽고 수정하며 셸 명령을 실행하는 <strong>자율 에이전트</strong>입니다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>일반 AI 채팅 (ChatGPT 등)</th><th>Claude Code</th></tr>
+        <tr><td>코드 붙여넣기 → 복붙 반복</td><td>프로젝트를 직접 탐색</td></tr>
+        <tr><td>파일 구조 모름</td><td><code>find</code>, <code>grep</code>으로 스스로 파악</td></tr>
+        <tr><td>실행 불가</td><td>터미널 명령 직접 실행</td></tr>
+        <tr><td>컨텍스트 날아감</td><td>대화 이어가며 누적 이해</td></tr>
+      </table>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-icon">💡</span>
+      <span><strong>핵심 철학:</strong> "시키는 것만 하지 않는다. 맥락을 이해하고 판단한다." — 코드 한 줄이 아니라 <em>의도</em>를 이해합니다.</span>
+    </div>
+  </div>
+
+  <!-- ═══ 2 ═══ -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>설치 & 첫 실행</h2>
+    </div>
+
+    <h3>설치 (Node.js 18+ 필요)</h3>
+    <pre>npm install -g @anthropic-ai/claude-code</pre>
+
+    <h3>API 키 설정</h3>
+    <pre><span class="keyword">export</span> ANTHROPIC_API_KEY=<span class="string">"sk-ant-..."</span>
+<span class="comment"># 영구 저장: ~/.zshrc 또는 ~/.bashrc에 위 라인 추가 후 source</span></pre>
+
+    <h3>첫 실행</h3>
+    <pre>cd 내-프로젝트-폴더
+claude</pre>
+
+    <div class="callout tip">
+      <span class="callout-icon">✅</span>
+      <span><code>&gt;</code> 프롬프트가 뜨면 성공. <strong>한국어로 말해도 됩니다.</strong></span>
+    </div>
+
+    <h3>비대화형 모드 (CI/스크립트용)</h3>
+    <pre>claude -p <span class="string">"이 파일의 버그를 찾아줘"</span> --output-format json</pre>
+  </div>
+
+  <!-- ═══ 3 ═══ -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>대화하듯 코딩하기 — 기본 사용법</h2>
+    </div>
+
+    <h3>황금 규칙: 컨텍스트를 충분히 줘라</h3>
+
+    <div class="mistake-card">
+      <div class="mistake-bad">
+        <div class="mistake-label">❌ 나쁜 프롬프트</div>
+        <pre>버그 고쳐줘</pre>
+      </div>
+      <div class="mistake-good">
+        <div class="mistake-label">✅ 좋은 프롬프트</div>
+        <pre>src/auth/login.ts의 loginUser 함수에서 JWT 토큰 만료 처리가
+안 되고 있어. 401 에러 대신 빈 객체를 반환하는 문제야.
+TypeScript이고 express 서버야.</pre>
+      </div>
+    </div>
+
+    <h3>멀티라인 입력</h3>
+    <p><code>\</code> 뒤에 Enter를 치면 여러 줄 입력 가능합니다:</p>
+    <pre>&gt; 다음 조건으로 API 엔드포인트 만들어줘 \
+  - POST /api/users \
+  - body: { name, email, password } \
+  - bcrypt로 비밀번호 해싱 \
+  - JWT 반환</pre>
+
+    <h3>! 접두사 — 셸 명령 직접 실행</h3>
+    <p>Claude에게 묻지 않고 셸 명령을 직접 실행합니다:</p>
+    <pre>! ls -la
+! git log --oneline -10
+! npm test</pre>
+
+    <h3>이미지 붙여넣기</h3>
+    <div class="callout info">
+      <span class="callout-icon">🖼</span>
+      <span>Mac에서 <code>Cmd+V</code>로 스크린샷을 바로 붙여넣을 수 있습니다. 에러 화면, 디자인 목업, 다이어그램 모두 이해합니다.</span>
+    </div>
+  </div>
+
+  <!-- ═══ 4 ═══ -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>파일 읽기 · 쓰기 · 수정</h2>
+    </div>
+
+    <div class="callout warn">
+      <span class="callout-icon">🔒</span>
+      <span>Claude Code는 <strong>허락 없이 파일을 수정하지 않습니다</strong> (기본값). 수정 전에 항상 확인을 요청합니다.</span>
+    </div>
+
+    <h3>@ 멘션으로 파일 지정</h3>
+    <pre>@src/utils/parser.ts 이 파일에서 메모리 누수 찾아줘</pre>
+
+    <h3>여러 파일 한번에</h3>
+    <pre>@package.json @tsconfig.json @.env.example
+프로젝트 구조 파악하고 TypeScript 설정 최적화해줘</pre>
+
+    <h3>폴더 전체</h3>
+    <pre>@src/ 전체 코드를 훑어보고 중복된 유틸 함수 목록 뽑아줘</pre>
+
+    <h3>새 파일 생성</h3>
+    <pre>&gt; Redis 캐시 클라이언트를 src/lib/cache.ts로 만들어줘.
+  connection pool 설정 포함해서.</pre>
+  </div>
+
+  <!-- ═══ 5 ═══ -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>슬래시 명령어 치트시트</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>명령어</th><th>설명</th><th>언제 쓰나</th></tr>
+        <tr><td><code>/help</code></td><td>도움말</td><td>처음 시작할 때</td></tr>
+        <tr><td><code>/clear</code></td><td>대화 히스토리 초기화</td><td><strong>새 작업 시작 전</strong></td></tr>
+        <tr><td><code>/compact</code></td><td>대화 요약 (컨텍스트 절약)</td><td>대화가 길어졌을 때</td></tr>
+        <tr><td><code>/cost</code></td><td>토큰 사용량 & 비용 확인</td><td>주기적으로 체크</td></tr>
+        <tr><td><code>/status</code></td><td>현재 설정 상태 확인</td><td>설정 확인 시</td></tr>
+        <tr><td><code>/model</code></td><td>Claude 모델 변경</td><td>모델 스위칭 시</td></tr>
+        <tr><td><code>/fast</code></td><td>Fast 모드 토글</td><td>빠른 응답이 필요할 때</td></tr>
+        <tr><td><code>/review</code></td><td>현재 브랜치 코드 리뷰</td><td>PR 전 점검</td></tr>
+        <tr><td><code>/memory</code></td><td>저장된 메모리 보기</td><td>기억 확인 시</td></tr>
+        <tr><td><code>/init</code></td><td>CLAUDE.md 생성</td><td><strong>새 프로젝트 시작 시</strong></td></tr>
+        <tr><td><code>/vim</code></td><td>Vim 키바인딩 모드</td><td>Vim 사용자</td></tr>
+        <tr><td><code>/quit</code></td><td>종료</td><td>—</td></tr>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-icon">⭐</span>
+      <span><strong>TOP 3 필수 명령어:</strong> <code>/clear</code> (새 작업마다), <code>/cost</code> (비용 체크), <code>/compact</code> (컨텍스트 절약)</span>
+    </div>
+  </div>
+
+  <!-- ═══ 6 ═══ -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>Git 워크플로우 자동화</h2>
+    </div>
+
+    <p>Claude Code의 진가가 가장 빛나는 영역입니다.</p>
+
+    <h3>커밋 메시지 자동 생성</h3>
+    <pre>&gt; 변경사항 커밋해줘</pre>
+    <p>Claude가 <code>git diff</code>를 읽고 의미 있는 커밋 메시지를 작성합니다.</p>
+
+    <h3>PR 생성</h3>
+    <pre>&gt; GitHub PR 만들어줘.
+  main 브랜치로, 이 기능의 목적과 테스트 방법 포함해서.</pre>
+
+    <h3>브랜치 전략</h3>
+    <pre>&gt; feature/user-auth 브랜치 만들고 거기서 작업 시작해줘</pre>
+
+    <h3>충돌 해결</h3>
+    <pre>&gt; git merge 충돌 났어. 해결해줘.
+  우리 팀 컨벤션은 새 기능 우선이야.</pre>
+
+    <h3>로컬 코드 리뷰</h3>
+    <pre>/review</pre>
+    <pre>&gt; main 대비 변경된 파일들 코드 리뷰해줘.
+  보안, 성능, 가독성 관점에서.</pre>
+  </div>
+
+  <!-- ═══ 7 ═══ -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>실전 패턴 10가지</h2>
+    </div>
+
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <h4>1️⃣ 버그 헌팅</h4>
+        <pre>&gt; npm test 실행하고
+  실패하는 테스트 모두 고쳐줘</pre>
+      </div>
+      <div class="pattern-card">
+        <h4>2️⃣ 리팩터링</h4>
+        <pre>&gt; src/api/ 에러 처리 일관성
+  없어. 파일 하나씩 확인받고
+  진행해.</pre>
+      </div>
+      <div class="pattern-card">
+        <h4>3️⃣ 문서화</h4>
+        <pre>&gt; @src/lib/database.ts
+  JSDoc 주석 달아줘.
+  퍼블릭 메서드만.</pre>
+      </div>
+      <div class="pattern-card">
+        <h4>4️⃣ 테스트 작성</h4>
+        <pre>&gt; @src/utils/validator.ts
+  Jest 유닛 테스트 작성.
+  엣지케이스 포함.</pre>
+      </div>
+      <div class="pattern-card">
+        <h4>5️⃣ 의존성 분석</h4>
+        <pre>&gt; package.json 보고 안 쓰는
+  패키지 찾아줘. 실제 import
+  여부까지 확인해서.</pre>
+      </div>
+      <div class="pattern-card">
+        <h4>6️⃣ 성능 최적화</h4>
+        <pre>&gt; @src/db/queries.ts
+  N+1 쿼리 문제 있는 곳
+  찾아서 수정해줘.</pre>
+      </div>
+      <div class="pattern-card">
+        <h4>7️⃣ 보안 감사</h4>
+        <pre>&gt; SQL Injection, XSS,
+  하드코딩된 시크릿
+  취약점 스캔해줘.</pre>
+      </div>
+      <div class="pattern-card">
+        <h4>8️⃣ 타입 강화</h4>
+        <pre>&gt; any 타입을 모두 찾아서
+  적절한 타입으로 교체.
+  하나씩 확인하며 진행.</pre>
+      </div>
+      <div class="pattern-card">
+        <h4>9️⃣ 환경 설정</h4>
+        <pre>&gt; Docker Compose로 개발환경.
+  Node.js + PostgreSQL + Redis.
+  hot reload 포함.</pre>
+      </div>
+      <div class="pattern-card">
+        <h4>🔟 레거시 마이그레이션</h4>
+        <pre>&gt; @src/routes/user.js
+  CommonJS → ESM + TypeScript.
+  기존 동작 그대로 유지.</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 8 ═══ -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>권한 & 보안 설정</h2>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>모드</th><th>설명</th><th>추천 상황</th></tr>
+        <tr>
+          <td><span class="badge badge-green">기본</span></td>
+          <td>수정 시마다 확인 요청</td>
+          <td>일반 개발 작업</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-red">Auto</span></td>
+          <td><code>--dangerously-skip-permissions</code></td>
+          <td>신뢰된 자동화 스크립트</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3>CLAUDE.md — 프로젝트 규칙 파일</h3>
+    <p>프로젝트 루트에 이 파일을 만들면 Claude가 세션마다 자동으로 참조합니다. <code>/init</code>으로 자동 생성 가능.</p>
+
+    <pre><span class="comment"># 프로젝트 규칙</span>
+
+<span class="comment">## 기술 스택</span>
+- Runtime: Node.js 20, TypeScript 5.x
+- Framework: Express 4
+- ORM: Prisma + PostgreSQL
+
+<span class="comment">## 코딩 컨벤션</span>
+- 함수명: camelCase
+- 에러 처리: Result 패턴 사용 (throw 금지)
+- 주석: 한국어
+
+<span class="comment">## 절대 하지 말것</span>
+- console.log를 코드에 남기지 말것
+- any 타입 사용 금지
+- 직접 DB 접근 (반드시 repository 레이어 경유)
+
+<span class="comment">## 자주 쓰는 명령</span>
+- 개발 서버: npm run dev
+- 테스트: npm test</pre>
+
+    <div class="callout tip">
+      <span class="callout-icon">💡</span>
+      <span><strong>CLAUDE.md의 핵심 가치:</strong> 매 세션마다 같은 설명을 반복하지 않아도 됩니다. 팀 전체가 같은 규칙으로 Claude를 사용할 수 있습니다.</span>
+    </div>
+  </div>
+
+  <!-- ═══ 9 ═══ -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>고급 기능 — MCP · 훅 · 멀티에이전트</h2>
+    </div>
+
+    <h3>MCP — 외부 도구 연결</h3>
+    <p>Claude Code에 GitHub, Slack, 데이터베이스 등 외부 서비스를 연결할 수 있습니다:</p>
+    <pre><span class="comment"># GitHub MCP 서버 추가</span>
+claude mcp add github -- npx @modelcontextprotocol/server-github
+
+<span class="comment"># Slack MCP 서버 추가</span>
+claude mcp add slack -- npx @modelcontextprotocol/server-slack</pre>
+
+    <p>연결 후에는 자연어로 제어합니다:</p>
+    <pre>&gt; GitHub에서 열린 이슈 목록 보여줘
+&gt; Slack #dev 채널에 배포 완료 메시지 보내줘</pre>
+
+    <h3>훅 (Hooks) — 자동화 트리거</h3>
+    <p>파일 수정 후 자동으로 lint를 실행하는 훅 예시 (<code>~/.claude/settings.json</code>):</p>
+    <pre>{
+  <span class="string">"hooks"</span>: {
+    <span class="string">"PostToolUse"</span>: [{
+      <span class="string">"matcher"</span>: <span class="string">"Write|Edit"</span>,
+      <span class="string">"hooks"</span>: [{
+        <span class="string">"type"</span>: <span class="string">"command"</span>,
+        <span class="string">"command"</span>: <span class="string">"npm run lint -- --fix"</span>
+      }]
+    }]
+  }
+}</pre>
+
+    <h3>멀티에이전트 (병렬 처리)</h3>
+    <pre>&gt; 다음 4가지 작업을 병렬로 처리해줘:
+  1. 유닛 테스트 작성
+  2. API 문서 업데이트
+  3. 타입 에러 수정
+  4. README 업데이트</pre>
+    <div class="callout info">
+      <span class="callout-icon">⚡</span>
+      <span>Claude Code가 내부적으로 서브에이전트를 생성해 동시에 처리합니다. 작업 시간이 대폭 단축됩니다.</span>
+    </div>
+  </div>
+
+  <!-- ═══ 10 ═══ -->
+  <div class="section" id="s10">
+    <div class="section-header">
+      <div class="section-num">10</div>
+      <h2>자주 하는 실수 & 해결법</h2>
+    </div>
+
+    <h3>실수 1: 컨텍스트 없이 질문</h3>
+    <div class="mistake-card">
+      <div class="mistake-bad"><div class="mistake-label">❌ 나쁜 예</div><pre>"고쳐줘"</pre></div>
+      <div class="mistake-good"><div class="mistake-label">✅ 좋은 예</div><pre>"src/auth/middleware.ts:45 에서 req.user가 undefined일 때
+401 대신 500 에러가 나. 타입가드 추가해서 고쳐줘."</pre></div>
+    </div>
+
+    <h3>실수 2: 너무 큰 작업 한 번에 요청</h3>
+    <div class="mistake-card">
+      <div class="mistake-bad"><div class="mistake-label">❌ 나쁜 예</div><pre>"전체 프로젝트 리팩터링해줘"</pre></div>
+      <div class="mistake-good"><div class="mistake-label">✅ 좋은 예</div><pre>"일단 src/utils/ 폴더만 리팩터링해줘. 끝나면 다음 폴더 얘기하자."</pre></div>
+    </div>
+
+    <h3>실수 3: 컨텍스트 한계 무시</h3>
+    <p>대화가 길어지면 초기 내용을 잊을 수 있습니다.</p>
+    <pre>/compact    <span class="comment"># 요약하고 계속</span>
+/clear      <span class="comment"># 새로 시작</span></pre>
+
+    <h3>실수 4: 결과 검증 안 함</h3>
+    <div class="callout warn">
+      <span class="callout-icon">⚠️</span>
+      <span>Claude가 작성한 코드는 <strong>반드시 테스트</strong>하세요. 항상 <code>npm test</code> 또는 <code>! 실행명령</code>으로 확인합니다.</span>
+    </div>
+
+    <h3>실수 5: CLAUDE.md 없이 사용</h3>
+    <p>매번 컨텍스트를 설명하는 대신 <code>/init</code>으로 프로젝트 규칙을 파일에 저장하세요. 팀 전체의 생산성이 올라갑니다.</p>
+
+    <h3>비용 최적화 팁</h3>
+    <div class="table-wrap">
+      <table>
+        <tr><th>상황</th><th>추천 모델</th><th>비용</th></tr>
+        <tr>
+          <td>간단한 수정, 빠른 답변</td>
+          <td><code>/model haiku</code></td>
+          <td>
+            <div class="cost-bar"><div class="cost-bar-fill" style="width:20px"></div> 저렴</div>
+          </td>
+        </tr>
+        <tr>
+          <td>일반 코딩 작업</td>
+          <td>기본 (Sonnet)</td>
+          <td>
+            <div class="cost-bar"><div class="cost-bar-fill" style="width:50px"></div> 중간</div>
+          </td>
+        </tr>
+        <tr>
+          <td>복잡한 아키텍처, 어려운 버그</td>
+          <td><code>/model opus</code></td>
+          <td>
+            <div class="cost-bar"><div class="cost-bar-fill" style="width:90px"></div> 높음</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 체크리스트 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">✓</div>
+      <h2>빠른 시작 체크리스트</h2>
+    </div>
+    <ul class="checklist">
+      <li><div class="checkbox"></div> <code>npm install -g @anthropic-ai/claude-code</code> 설치</li>
+      <li><div class="checkbox"></div> <code>ANTHROPIC_API_KEY</code> 환경변수 설정 (~/.zshrc)</li>
+      <li><div class="checkbox"></div> 프로젝트 폴더에서 <code>claude</code> 실행</li>
+      <li><div class="checkbox"></div> <code>/init</code> 으로 CLAUDE.md 생성</li>
+      <li><div class="checkbox"></div> 첫 작업: <em>"이 프로젝트 구조 파악하고 요약해줘"</em></li>
+      <li><div class="checkbox"></div> <code>/cost</code> 로 비용 확인하는 습관 만들기</li>
+      <li><div class="checkbox"></div> <code>/clear</code> 로 새 작업마다 컨텍스트 리셋</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <p>Claude Code 공식 문서: <a href="https://docs.anthropic.com/claude-code">docs.anthropic.com/claude-code</a></p>
+  <p style="margin-top:8px; color:#A8A29E;">문의 & 피드백: <a href="https://github.com/anthropics/claude-code/issues">github.com/anthropics/claude-code/issues</a></p>
+  <p style="margin-top:16px; font-size:11px; color:#C7BFB8;">PDF로 저장: 브라우저에서 Cmd+P → "PDF로 저장" 선택</p>
+</footer>
+
+</body>
+</html>
