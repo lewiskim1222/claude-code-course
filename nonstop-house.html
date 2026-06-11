@@ -798,50 +798,167 @@
             color: var(--text-light);
         }
 
+        /* Mobile top bar (hidden on desktop) */
+        .mobile-topbar {
+            display: none;
+        }
+
         /* Screen-size safety fallback */
         @media (max-width: 1400px) {
-            .presentation-frame {
-                max-width: 960px;
-            }
-            .sidebar {
-                width: 260px;
-            }
-            .main-content {
-                margin-left: 260px;
-                padding: 20px;
-            }
+            .presentation-frame { max-width: 960px; }
+            .sidebar { width: 260px; }
+            .main-content { margin-left: 260px; padding: 20px; }
         }
 
         @media (max-width: 768px) {
-            .app-container {
-                flex-direction: column;
-            }
-            .sidebar {
-                position: relative;
-                width: 100%;
-                height: auto;
-                border-right: none;
+            /* 사이드바 완전히 숨김 */
+            .sidebar { display: none; }
+
+            /* 모바일 상단 바 표시 */
+            .mobile-topbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: fixed;
+                top: 0; left: 0; right: 0;
+                height: 52px;
+                background: var(--bg-surface);
                 border-bottom: 1px solid var(--border-color);
+                padding: 0 18px;
+                z-index: 200;
+                box-shadow: var(--shadow-sm);
             }
+
+            .mobile-topbar .m-logo {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--text-main);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .mobile-topbar .m-logo i { color: var(--primary); }
+            .mobile-topbar .m-logo span { color: var(--primary); }
+
+            .mobile-topbar .m-counter {
+                font-size: 12px;
+                color: var(--text-muted);
+                background: var(--bg-base);
+                padding: 4px 10px;
+                border-radius: 20px;
+                border: 1px solid var(--border-color);
+            }
+
+            /* 메인 콘텐츠 */
             .main-content {
                 margin-left: 0;
-                padding: 20px 10px;
+                padding: 52px 0 0;
+                min-height: 100vh;
+                align-items: stretch;
+                background: var(--bg-base);
             }
+
+            /* 슬라이드 프레임: 풀스크린 */
             .presentation-frame {
-                aspect-ratio: auto;
-                height: auto;
+                aspect-ratio: unset;
+                height: calc(100vh - 52px);
+                border-radius: 0;
+                border: none;
+                box-shadow: none;
+                max-width: 100%;
             }
+
+            /* 슬라이드 내부 스크롤 */
             .slide {
-                padding: 26px 18px;
+                padding: 20px 18px;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
+
+            .slide-header {
+                padding-bottom: 14px;
+                margin-bottom: 14px;
+            }
+
+            .slide-title {
+                font-size: 17px;
+                gap: 8px;
+            }
+
+            .slide-title i { font-size: 16px; }
+            .slide-category { display: none; }
+
+            /* 그리드 → 1열 */
             .cols-2, .cols-3 {
                 grid-template-columns: 1fr;
-                gap: 16px;
+                gap: 12px;
             }
+
+            /* 큰 숫자 축소 */
+            .indicator-number { font-size: 64px; }
+            .large-indicator-box { padding: 24px; }
+
+            /* 타임라인 세로 변환 */
+            .timeline-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .timeline-container::before {
+                top: 0; bottom: 0;
+                left: 17px; right: auto;
+                width: 2px;
+                height: auto;
+            }
+
+            .timeline-item {
+                width: 100%;
+                flex-direction: row;
+                align-items: flex-start;
+                text-align: left;
+                gap: 12px;
+            }
+
+            .timeline-content-card {
+                margin-top: 0;
+                flex: 1;
+            }
+
+            /* Step2 그리드 → 1열 */
+            .step2-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            /* 하단 네비 간소화 */
+            .slide-footer {
+                padding-top: 14px;
+                margin-top: 14px;
+            }
+
+            .slide-info-meta { font-size: 11px; }
+
+            /* 계산기 슬라이더 텍스트 */
+            .slider-value { font-size: 14px; min-width: 80px; }
+        }
+
+        @media (max-width: 400px) {
+            .step2-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+
+<!-- 모바일 전용 상단 바 -->
+<div class="mobile-topbar">
+    <div class="m-logo">
+        <i class="fa-solid fa-calculator"></i>
+        NONSTOP<span>HOUSE</span>
+    </div>
+    <span class="m-counter" id="mobileCounter">1 / 12</span>
+</div>
 
 <div class="app-container">
     <aside class="sidebar">
@@ -1530,6 +1647,8 @@
         const menuItems = document.querySelectorAll(".menu-item");
 
         // 2. Navigation Logic
+        const mobileCounter = document.getElementById("mobileCounter");
+
         function goToSlide(index) {
             if (index < 0 || index >= slides.length) return;
 
@@ -1542,6 +1661,11 @@
             menuItems[currentSlideIndex].classList.add("active");
 
             menuItems[currentSlideIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            // 모바일 상단 카운터 업데이트
+            if (mobileCounter) {
+                mobileCounter.textContent = `${currentSlideIndex + 1} / ${slides.length}`;
+            }
         }
 
         document.addEventListener("keydown", function (e) {
