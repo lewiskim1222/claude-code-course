@@ -16,23 +16,23 @@
            Easily customizable brand colors and typography
            ========================================== */
         :root {
-            --bg-base: #0E0C09;           /* Warm Deep Dark */
-            --bg-surface: #1A1714;        /* Dark Warm Card */
-            --bg-surface-hover: #242018;
-            --primary: #D4A853;           /* Warm Gold */
-            --primary-rgb: 212, 168, 83;
-            --primary-light: rgba(212, 168, 83, 0.12);
-            --accent: #C4705A;            /* Warm Terracotta */
-            --accent-light: rgba(196, 112, 90, 0.12);
-            --success: #7DB87A;
-            --text-main: #F2EDE5;         /* Warm Cream White */
-            --text-muted: #9A8E82;        /* Warm Muted */
-            --text-light: #6B6057;
-            --border-color: rgba(242, 237, 229, 0.09);
-            --border-light: rgba(242, 237, 229, 0.04);
-            --shadow-sm: 0 1px 4px rgba(0,0,0,0.35);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.45);
-            --shadow-lg: 0 10px 40px rgba(0,0,0,0.55);
+            --bg-base: #F5F3F0;           /* Warm Light Cream */
+            --bg-surface: #FFFFFF;         /* Pure White Card */
+            --bg-surface-hover: #EDE9E4;
+            --primary: #D44035;            /* Coral Red */
+            --primary-rgb: 212, 64, 53;
+            --primary-light: rgba(212, 64, 53, 0.08);
+            --accent: #B83228;             /* Deep Coral */
+            --accent-light: rgba(184, 50, 40, 0.08);
+            --success: #3D9A6A;
+            --text-main: #1C1A18;          /* Deep Charcoal */
+            --text-muted: #6A6460;         /* Muted Gray-Brown */
+            --text-light: #A09890;         /* Light Gray */
+            --border-color: rgba(28, 26, 24, 0.1);
+            --border-light: rgba(28, 26, 24, 0.05);
+            --shadow-sm: 0 1px 4px rgba(0,0,0,0.07);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.09);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
             --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -132,7 +132,7 @@
         .menu-item:hover, .menu-item.active {
             color: var(--primary);
             background-color: var(--primary-light);
-            border-color: rgba(79, 70, 229, 0.15);
+            border-color: rgba(212, 64, 53, 0.15);
         }
 
         .menu-item.active {
@@ -315,7 +315,7 @@
 
         .nav-arrow:hover {
             background-color: var(--primary);
-            color: #1A1714;
+            color: #FFFFFF;
             border-color: var(--primary);
         }
 
@@ -334,7 +334,7 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 40px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
         }
 
         /* ==========================================
@@ -344,7 +344,7 @@
         h3 { font-size: 20px; color: var(--text-main); margin-bottom: 12px; font-weight: 700; }
         p { font-size: 14px; color: var(--text-muted); line-height: 1.75; }
         strong { color: var(--text-main); }
-        code { background: var(--primary-light); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: 700; border: 1px solid rgba(212, 168, 83, 0.2); }
+        code { background: var(--primary-light); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-size: 13px; font-weight: 700; border: 1px solid rgba(212, 64, 53, 0.2); }
 
         /* Grid Frameworks */
         .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -362,19 +362,19 @@
 
         .card:hover {
             transform: translateY(-2px);
-            border-color: rgba(79, 70, 229, 0.25);
+            border-color: rgba(212, 64, 53, 0.25);
             box-shadow: var(--shadow-md);
         }
 
         /* Accent-colored card variant */
         .card-indigo {
             background: var(--primary-light);
-            border-color: rgba(212, 168, 83, 0.25);
+            border-color: rgba(212, 64, 53, 0.2);
         }
 
         .card-coral {
             background: var(--accent-light);
-            border-color: rgba(196, 112, 90, 0.2);
+            border-color: rgba(184, 50, 40, 0.18);
         }
 
         /* Custom Interactive Components */
@@ -383,8 +383,8 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at center, rgba(212, 168, 83, 0.12) 0%, transparent 70%);
-            border: 1.5px dashed rgba(212, 168, 83, 0.35);
+            background: radial-gradient(circle at center, rgba(212, 64, 53, 0.07) 0%, transparent 70%);
+            border: 1.5px dashed rgba(212, 64, 53, 0.3);
             border-radius: 16px;
             padding: 36px;
             text-align: center;
@@ -419,7 +419,7 @@
             color: var(--primary);
             padding: 14px 16px;
             font-weight: 600;
-            border-bottom: 1px solid rgba(212, 168, 83, 0.15);
+            border-bottom: 1px solid rgba(212, 64, 53, 0.15);
         }
 
         td {
@@ -504,7 +504,7 @@
         .timeline-node.passed, .timeline-node.active {
             border-color: var(--primary);
             background-color: var(--primary);
-            color: #1A1714;
+            color: #FFFFFF;
             box-shadow: 0 0 0 4px var(--primary-light);
         }
 
@@ -555,7 +555,7 @@
 
         .check-item:hover {
             background: var(--bg-base);
-            border-color: rgba(79, 70, 229, 0.25);
+            border-color: rgba(212, 64, 53, 0.25);
         }
 
         .check-item input[type="checkbox"] {
@@ -585,7 +585,7 @@
             content: "\f00c";
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
-            color: #1A1714;
+            color: #FFFFFF;
             font-size: 10px;
         }
 
@@ -705,14 +705,14 @@
 
         .savings-banner {
             grid-column: span 2;
-            background: linear-gradient(90deg, rgba(212, 168, 83, 0.12), rgba(196, 112, 90, 0.12));
+            background: linear-gradient(90deg, rgba(212, 64, 53, 0.07), rgba(184, 50, 40, 0.07));
             padding: 12px;
             border-radius: 8px;
             text-align: center;
             font-weight: 700;
             font-size: 13px;
             color: var(--primary);
-            border: 1px solid rgba(212, 168, 83, 0.2);
+            border: 1px solid rgba(212, 64, 53, 0.18);
         }
 
         /* Link styles */
@@ -722,7 +722,7 @@
             gap: 6px;
             background: var(--primary-light);
             color: var(--primary);
-            border: 1px solid rgba(212, 168, 83, 0.25);
+            border: 1px solid rgba(212, 64, 53, 0.25);
             padding: 6px 12px;
             border-radius: 6px;
             font-size: 12px;
@@ -733,7 +733,7 @@
 
         .quick-link:hover {
             background: var(--primary);
-            color: #1A1714;
+            color: #FFFFFF;
         }
 
         .links-row {
@@ -753,7 +753,7 @@
 
         .step2-card {
             background: var(--bg-surface);
-            border: 1.5px dashed rgba(212, 168, 83, 0.18);
+            border: 1.5px dashed rgba(212, 64, 53, 0.18);
             border-radius: 12px;
             padding: 18px;
             text-align: center;
@@ -762,7 +762,7 @@
         }
 
         .step2-card:hover {
-            border-color: rgba(212, 168, 83, 0.4);
+            border-color: rgba(212, 64, 53, 0.4);
             background: var(--bg-surface-hover);
         }
 
